@@ -38,51 +38,82 @@ def clamp(value, min_value=STAT_MIN, max_value=STAT_MAX):
 def calculate_stats(daily_input):
     stats = BASE_STATS.copy()
 
+    # -----------------
+    # Inputs with limits
+    # -----------------
     sleep = daily_input.get("sleep_hours", 0)
-    screen_time = daily_input.get("screen_time", 0)
-    exercise = daily_input.get("exercise", False)
-    stress = daily_input.get("stress_level", 0)
-    water = daily_input.get("water_intake", 0)
+    sleep = max(0, min(sleep, 12))          # max 12 hrs
 
+    screen_time = daily_input.get("screen_time", 0)
+    screen_time = max(0, min(screen_time, 16))  # max 16 hrs
+
+    stress = daily_input.get("stress_level", 0)
+    stress = max(0, min(stress, 5))          # scale 0–5
+
+    water = daily_input.get("water_intake", 0)
+    water = max(0, min(water, 6))            # max 6 litres
+
+    exercise = bool(daily_input.get("exercise", False))
+
+    # -----------------
     # Sleep logic
-    if sleep >= 7:
+    # -----------------
+    if 7 <= sleep <= 9:
         stats["energy"] += 10
         stats["focus"] += 5
     elif sleep < 5:
         stats["energy"] -= 15
         stats["focus"] -= 10
+    elif sleep > 10:                          # oversleep → laziness
+        stats["energy"] -= 5
 
+    # -----------------
     # Screen time logic
-    if screen_time > 7:
+    # -----------------
+    if screen_time < 1:
+        stats["focus"] += 10
+    elif screen_time > 4:
         stats["focus"] -= 10
 
+    # -----------------
     # Exercise logic
+    # -----------------
     if exercise:
         stats["health"] += 10
         stats["energy"] += 5
 
+    # -----------------
     # Stress logic
+    # -----------------
     if stress >= 4:
         stats["focus"] -= 10
         stats["health"] -= 5
 
+    # -----------------
     # Resilience logic
+    # -----------------
     if sleep >= 7 and exercise:
         stats["resilience"] += 10
 
     if stress >= 4 and sleep < 6:
         stats["resilience"] -= 10
 
-        
-    # Water intake
-    if water >= 3:
+    # -----------------
+    # Water intake logic
+    # -----------------
+    if water < 2:
+        stats["energy"] -= 5
+    elif water >= 3:
         stats["energy"] += 5
 
-    # Clamp all stats
+    # -----------------
+    # Clamp all stats (0–100)
+    # -----------------
     for key in stats:
         stats[key] = clamp(stats[key])
 
     return stats
+
 
 """
 # ---------------------------------
