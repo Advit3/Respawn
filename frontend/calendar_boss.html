@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RESPAWN – Calendar & Boss</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 36px;
+  background:#065f46;
+  color:white;
+}
+
+.logo{ font-size:22px; font-weight:700; }
+.menu-icon{ font-size:26px; cursor:pointer; }
+
+/* SIDE MENU */
+.side-menu{
+  position:fixed;
+  top:70px;
+  right:20px;
+  background:white;
+  padding:16px 18px;
+  border-radius:14px;
+  display:none;
+  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+.side-menu a{
+  display:block;
+  color:#065f46;
+  text-decoration:none;
+  padding:8px 0;
+  font-weight:500;
+}
+
+/* PAGE */
+.container{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.section{
+  background:white;
+  padding:22px;
+  border-radius:16px;
+  margin-bottom:28px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
+
+.section h2{ margin-top:0; }
+
+/* BUTTONS */
+.btn{
+  padding:8px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.add-btn{ background:#22c55e; color:white; }
+.delete-btn{ background:#ef4444; color:white; font-size:12px; }
+
+/* CARD */
+.card{
+  background:#f1f5f9;
+  padding:14px 16px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+
+.card-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.muted{ font-size:14px; color:#475569; }
+.xp{ color:#16a34a; font-weight:700; }
+
+/* FORM */
+.form{
+  display:none;
+  margin-bottom:14px;
+}
+
+.form input,.form select{
+  width:100%;
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:8px;
+  border:1px solid #cbd5f5;
+}
+
+/* BOSS */
+.hp-bar{
+  background:#cbd5e1;
+  border-radius:10px;
+  height:16px;
+  overflow:hidden;
+  margin:10px 0;
+}
+
+.hp-fill{
+  height:100%;
+  width:70%;
+  background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);
+}
+
+.tip{
+  color:#047857;
+  font-size:14px;
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">RESPAWN</div>
+  <div class="menu-icon" onclick="toggleMenu()">☰</div>
+</div>
+
+<div class="side-menu" id="menu">
+  <a href="stats.html">Home</a>
+  <a href="quests.html">Quests</a>
+  <a href="calendar.html">Calendar & Boss</a>
+  <a href="work.html">Work</a>
+</div>
+
+<div class="container">
+
+<!-- CALENDAR EVENTS -->
+<div class="section">
+  <h2>Calendar Events</h2>
+
+  <button class="btn add-btn" onclick="toggleForm()">+ Add Event</button>
+
+  <div class="form" id="eventForm">
+    <input id="eventName" placeholder="Event name">
+    
+    <!-- ✅ DATE PICKER -->
+    <input id="eventDate" type="date">
+    
+    <select id="eventPressure">
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+
+    <button class="btn add-btn" onclick="addEvent()">Save Event</button>
+  </div>
+
+  <div id="eventList"></div>
+</div>
+
+<!-- ACTIVE BOSS -->
+<div class="section">
+  <h2>Active Boss</h2>
+
+  <div class="card">
+    <strong>👹 Burnout Beast</strong>
+    <p class="muted">Energy and focus have been low for several days.</p>
+
+    <div class="hp-bar">
+      <div class="hp-fill"></div>
+    </div>
+
+    <div class="card-row">
+      <span>HP: 70 / 100</span>
+      <span>Days left: 2</span>
+    </div>
+
+    <div class="tip">Tip: Sleep well and reduce screen time</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+let events=[];
+
+const today=new Date().toISOString().split("T")[0];
+document.getElementById("eventDate").min=today;
+
+function toggleMenu(){
+  const m=document.getElementById("menu");
+  m.style.display=m.style.display==="block"?"none":"block";
+}
+
+function toggleForm(){
+  const f=document.getElementById("eventForm");
+  f.style.display=f.style.display==="block"?"none":"block";
+}
+
+function addEvent(){
+  const name=document.getElementById("eventName").value;
+  const dateValue=document.getElementById("eventDate").value;
+  const pressure=document.getElementById("eventPressure").value;
+
+  if(!name||!dateValue) return;
+
+  const selectedDate=new Date(dateValue);
+  const today=new Date();
+  const daysLeft=Math.ceil((selectedDate-today)/(1000*60*60*24));
+
+  const xp=pressure==="High"?40:pressure==="Medium"?25:15;
+
+  events.push({name,daysLeft,pressure,xp});
+  renderEvents();
+}
+
+function deleteEvent(index){
+  events.splice(index,1);
+  renderEvents();
+}
+
+function renderEvents(){
+  const list=document.getElementById("eventList");
+  list.innerHTML="";
+  events.forEach((e,i)=>{
+    list.innerHTML+=`
+      <div class="card">
+        <div class="card-row">
+          <strong>${e.name}</strong>
+          <span class="xp">+${e.xp}</span>
+        </div>
+        <div class="card-row">
+          <div class="muted">Starts in ${e.daysLeft} days · ${e.pressure} Pressure</div>
+          <button class="btn delete-btn" onclick="deleteEvent(${i})">Delete</button>
+        </div>
+      </div>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>

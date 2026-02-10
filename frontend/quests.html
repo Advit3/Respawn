@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RESPAWN – Quests</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 36px;
+  background:#065f46;
+  color:white;
+}
+
+.logo{ font-size:22px; font-weight:700; }
+.menu-icon{ font-size:26px; cursor:pointer; }
+
+/* SIDE MENU */
+.side-menu{
+  position:fixed;
+  top:70px;
+  right:20px;
+  background:white;
+  padding:16px;
+  border-radius:14px;
+  display:none;
+  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+.side-menu a{
+  display:block;
+  padding:8px 0;
+  color:#065f46;
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* PAGE */
+.container{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.section{
+  background:white;
+  padding:22px;
+  border-radius:16px;
+  margin-bottom:28px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
+
+.section h2{
+  margin-top:0;
+}
+
+/* QUEST CARD */
+.card{
+  background:#f1f5f9;
+  padding:16px;
+  border-radius:14px;
+  margin-bottom:14px;
+}
+
+.card-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.badge{
+  padding:4px 10px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.corrective{ background:#fecaca; color:#7f1d1d; }
+.support{ background:#bbf7d0; color:#065f46; }
+.preventive{ background:#bfdbfe; color:#1e3a8a; }
+
+.xp{
+  color:#16a34a;
+  font-weight:700;
+}
+
+.muted{
+  color:#475569;
+  font-size:14px;
+}
+
+/* BUTTON */
+.btn{
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.complete{
+  background:#22c55e;
+  color:white;
+}
+
+.locked{
+  background:#cbd5e1;
+  color:#475569;
+  cursor:not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">RESPAWN</div>
+  <div class="menu-icon" onclick="toggleMenu()">☰</div>
+</div>
+
+<div class="side-menu" id="menu">
+  <a href="stats.html">Home</a>
+  <a href="quests.html">Quests</a>
+  <a href="calendar_boss.html">Calendar & Boss</a>
+  <a href="work.html">Work</a>
+</div>
+
+<div class="container">
+
+<!-- ACTIVE QUESTS -->
+<div class="section" id="active-quests">
+  <h2>Active Quests</h2>
+
+
+  <!-- Manual quest -->
+  <div class="card">
+    <div class="card-row">
+      <strong>10-minute breathing exercise</strong>
+      <span class="xp">+10 XP</span>
+    </div>
+    <div class="card-row">
+      <span class="badge support">Support</span>
+      <button class="btn complete" onclick="completeQuest(this)">
+  Mark Complete
+</button>
+
+    </div>
+    <div class="muted">Manual completion</div>
+  </div>
+
+  <!-- Input based quest -->
+  <div class="card">
+    <div class="card-row">
+      <strong>Sleep at least 7 hours</strong>
+      <span class="xp">+25 XP</span>
+    </div>
+    <div class="card-row">
+      <span class="badge corrective">Corrective</span>
+      <button class="btn locked">Auto-complete</button>
+    </div>
+    <div class="muted">Completed automatically from daily input</div>
+  </div>
+
+</div>
+
+<!-- COMPLETED QUESTS -->
+<div class="section" id="completed-quests">
+  <h2>Completed Today</h2>
+
+
+  <div class="card">
+    <div class="card-row">
+      <strong>Drink at least 3L of water</strong>
+      <span class="xp">+15 XP</span>
+    </div>
+    <div class="muted">Completed via daily input</div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+function toggleMenu(){
+  const m = document.getElementById("menu");
+  m.style.display = m.style.display === "block" ? "none" : "block";
+}
+
+function completeQuest(button){
+  // Find the card
+  const card = button.closest(".card");
+
+  // Remove the button row
+  button.remove();
+
+  // Add completion text
+  const completedText = document.createElement("div");
+  completedText.className = "muted";
+  completedText.innerText = "Completed manually";
+  card.appendChild(completedText);
+
+  // Move card to Completed section
+  const completedSection = document.getElementById("completed-quests");
+  completedSection.appendChild(card);
+}
+</script>
+
+
+</body>
+</html>
