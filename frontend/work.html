@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Work – RESPAWN</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#021a14;
+  color:white;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 24px;
+  background:#065f46;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:16px;
+}
+
+/* ===== CARDS ===== */
+.card{
+  background:rgba(0,0,0,0.55);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:14px;
+}
+
+input, select{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin-top:6px;
+}
+
+.btn{
+  margin-top:8px;
+  padding:8px 12px;
+  border:none;
+  border-radius:10px;
+  background:#22c55e;
+  color:black;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* ===== TASK LIST ===== */
+.todo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#022c22;
+  padding:10px;
+  border-radius:10px;
+  margin-top:6px;
+  border:1px solid #4ade80;
+}
+
+.type{
+  font-size:12px;
+  background:#065f46;
+  padding:4px 8px;
+  border-radius:8px;
+  margin-left:6px;
+}
+
+.done{
+  text-decoration:line-through;
+  opacity:0.6;
+}
+
+/* ===== FOCUS COMPASS ===== */
+.stateBox{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+
+.state{
+  background:#022c22;
+  padding:12px;
+  border-radius:12px;
+  text-align:center;
+  cursor:pointer;
+  border:1px solid #4ade80;
+}
+
+.suggest{
+  background:#065f46;
+  padding:8px;
+  border-radius:10px;
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div>RESPAWN – Work Mode</div>
+  <a href="dashboard.html" style="color:white">Back</a>
+</div>
+
+<div class="container">
+
+<!-- ========== ADD TASK ========== -->
+<div class="card">
+  <h3>📝 Add Task</h3>
+
+  <input id="taskInput" placeholder="Task name..." />
+
+  <select id="taskType">
+    <option value="study">Study</option>
+    <option value="work">Work</option>
+    <option value="health">Health</option>
+    <option value="personal">Personal</option>
+  </select>
+
+  <button class="btn" onclick="addTask()">Add Task</button>
+
+  <h4>Today’s Tasks</h4>
+  <div id="todoBox"></div>
+</div>
+
+<!-- ========== FOCUS COMPASS ========== -->
+<div class="card">
+  <h3>🧭 Focus Compass</h3>
+  <p>How are you feeling right now?</p>
+
+  <div class="stateBox">
+    <div class="state" onclick="showHelp('low')">😵 Low Focus</div>
+    <div class="state" onclick="showHelp('fatigue')">😴 Fatigued</div>
+    <div class="state" onclick="showHelp('over')">⚡ Overstimulated</div>
+  </div>
+
+  <div id="helpBox"></div>
+</div>
+
+</div>
+
+<script>
+/* ===== ADD TASK LOGIC (UI ONLY) ===== */
+
+let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+let taskXpToday = JSON.parse(localStorage.getItem('taskXpToday') || '0');
+let lastReset = localStorage.getItem('lastReset') || new Date().toDateString();
+
+/* ---- DAILY RESET 4 AM ---- */
+function checkReset(){
+  let now = new Date();
+  let resetTime = new Date();
+  resetTime.setHours(4,0,0,0);
+
+  if(now > resetTime && lastReset !== now.toDateString()){
+    taskXpToday = 0;
+    localStorage.setItem('taskXpToday','0');
+    localStorage.setItem('lastReset', now.toDateString());
+  }
+}
+checkReset();
+
+function renderTasks(){
+  todoBox.innerHTML='';
+
+  tasks.forEach((t,i)=>{
+
+    let xpBadge = t.xpGiven 
+      ? `<span style='color:#4ade80'>+5 XP</span>` 
+      : `<span style='color:#777'>No XP</span>`;
+
+    todoBox.innerHTML += `
+      <div class="todo ${t.status=='completed'?'done':''}">
+        <div>
+          <span onclick="toggleTask(${i})">${t.title}</span>
+          <span class="type">${t.type}</span>
+        </div>
+
+        <div>
+          ${xpBadge}
+          <span onclick="deleteTask(${i})">❌</span>
+        </div>
+      </div>`;
+  });
+}
+
+function addTask(){
+  let title = taskInput.value;
+  let type = taskType.value;
+
+  if(!title) return;
+
+  tasks.push({
+    title,
+    type,
+    status:"pending",
+    xpGiven:false,
+    createdAt: new Date().toISOString()
+  });
+
+  taskInput.value='';
+  saveTasks();
+}
+
+function toggleTask(i){
+  let t = tasks[i];
+
+  t.status = t.status=="pending" ? "completed" : "pending";
+
+  /* ---- XP RULE ---- */
+  if(t.status=="completed" && !t.xpGiven && taskXpToday < 3){
+    t.xpGiven = true;
+    taskXpToday++;
+
+    localStorage.setItem('taskXpToday', taskXpToday);
+    alert("+5 XP Earned!");
+  }
+
+  saveTasks();
+}
+
+function deleteTask(i){
+  tasks.splice(i,1);
+  saveTasks();
+}
+
+function saveTasks(){
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTasks();
+}
+
+renderTasks();
+
+/* ===== FOCUS COMPASS (NO XP) ===== */
+
+function showHelp(type){
+  let box = document.getElementById("helpBox");
+
+  if(type=="low"){
+    box.innerHTML = `
+      <div class='suggest'>⏱ 25-min focus sprint</div>
+      <div class='suggest'>🌬 2-min breathing</div>
+      <div class='suggest'>🪨 Start smallest task</div>`;
+  }
+
+  if(type=="fatigue"){
+    box.innerHTML = `
+      <div class='suggest'>🚶 Short walk</div>
+      <div class='suggest'>💧 Drink water</div>
+      <div class='suggest'>😴 Power nap</div>`;
+  }
+
+  if(type=="over"){
+    box.innerHTML = `
+      <div class='suggest'>🔕 Silence for 5 min</div>
+      <div class='suggest'>📱 Reduce brightness</div>
+      <div class='suggest'>🎯 One task only</div>`;
+  }
+}
+</script>
+
+</body>
+</html>
