@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - RESPAWN</title>
+
+<style>
+/* -------- GLOBAL -------- */
+html, body{
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:url('../assets/images/bg.png') no-repeat center center fixed;
+  background-size:cover;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* -------- CENTER CARD -------- */
+.container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex:1;
+  padding:16px;
+}
+
+.card{
+  background:rgba(0,0,0,0.60);
+  padding:26px;
+  border-radius:14px;
+  width:360px;
+  max-width:100%;
+  box-shadow:0 8px 20px rgba(0,0,0,0.30);
+}
+
+h2{
+  text-align:center;
+  margin-top:4px;
+}
+
+/* -------- INPUTS -------- */
+.input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:2px solid #4ade80;
+  border-radius:8px;
+  background:#022c22;
+  color:#ecfdf5;
+  box-sizing:border-box;
+  font-size:15px;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:8px;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.primary{
+  background:white;
+  color:#065f46;
+  font-weight:bold;
+}
+
+.primary:hover{
+  background:#dcfce7;
+}
+
+.google{
+  background:transparent;
+  border:2px solid white;
+  color:white;
+}
+
+.link{
+  text-align:center;
+  margin-top:10px;
+}
+
+/* -------- FOOTER -------- */
+footer{
+  background:#065f46;
+  padding:16px;
+  text-align:center;
+  color:white;
+}
+
+.footer-column{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+/* -------- MOBILE RESPONSIVE -------- */
+@media(max-width:600px){
+  .card{
+    width:95%;
+    padding:20px;
+  }
+
+  .btn{
+    padding:14px;
+  }
+
+  .input{
+    padding:14px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h2>Welcome Back</h2>
+
+    <input class="input" placeholder="Email" />
+    <input class="input" type="password" placeholder="Password" />
+
+    <button class="btn primary" onclick="location.href='avatar.html'">Login</button>
+
+    <button class="btn google">Continue with Google</button>
+
+    <div class="link">
+      <small>New here? <a href="signup.html" style="color:#a7f3d0">Create Account</a></small>
+    </div>
+  </div>
+</div>
+
+<!-- GREEN FOOTER COLUMN STYLE -->
+<footer>
+  <div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;">
+
+    <!-- SUPPORT COLUMN -->
+    <div class="footer-column">
+      <div style="font-weight:bold;font-size:16px;color:#a7f3d0;">Support</div>
+      <span>FAQ</span>
+      <span>Help Center</span>
+    </div>
+
+    <!-- SOCIAL COLUMN -->
+    <div class="footer-column">
+      <div style="font-weight:bold;font-size:16px;color:#a7f3d0;">Social</div>
+      <span>Instagram</span>
+      <span>Discord</span>
+      <span>Twitter</span>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>

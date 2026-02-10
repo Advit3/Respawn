@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RESPAWN</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+
+  /* ✅ FIXED PATH */
+  background:url('../assets/images/bg.png');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+
+  color:#ffffff;
+}
+
+/* overlay kept transparent as you wanted */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:transparent;
+  z-index:-1;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  background:#065f46;
+  color:white;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+.nav a{
+  color:white;
+  margin:0 12px;
+  text-decoration:none;
+}
+
+.login-btn{
+  background:rgba(255,255,255,0.18);
+  border:2px solid #022c22;
+  padding:8px 14px;
+  border-radius:8px;
+  color:#022c22;
+}
+
+/* HERO SECTION */
+.hero{
+  display:flex;
+  flex-wrap:wrap;
+  padding:40px;
+  align-items:center;
+  justify-content:space-around;
+}
+
+.hero-text{
+  max-width:520px;
+}
+
+.hero-text h1{
+  font-size:42px;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.8);
+}
+
+.hero-text p{
+  text-shadow:1px 1px 6px rgba(0,0,0,0.8);
+}
+
+.card{
+  background:rgba(0,0,0,0.55);
+  padding:22px;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+}
+
+.input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:2px solid #4ade80;
+  border-radius:8px;
+  background:#022c22;
+  color:#ecfdf5;
+  box-sizing:border-box;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.primary{
+  background:white;
+  color:#065f46;
+  font-weight:bold;
+}
+
+.primary:hover{
+  background:#dcfce7;
+  color:#065f46;
+}
+
+.google{
+  background:transparent;
+  border:2px solid white;
+  color:white;
+  opacity:0.95;
+}
+
+/* HOW WORKS */
+.section{
+  padding:40px;
+  text-align:center;
+}
+
+.box{
+  background:rgba(236,253,245,0.82);
+  padding:18px;
+  border-radius:12px;
+  margin:10px;
+  color:#064e3b;
+}
+
+/* FOOTER */
+.footer{
+  background:#064e3b;
+  color:white;
+  padding:30px;
+  text-align:center;
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width:900px){
+  .hero{flex-direction:column; padding:20px; text-align:center;}
+  .hero-text h1{font-size:30px;}
+  .card{width:92%; margin:auto;}
+  .header{flex-direction:column; gap:10px;}
+  .nav a{display:inline-block; margin:6px;}
+}
+
+@media(max-width:600px){
+  .input{padding:12px;}
+  .btn{padding:14px;}
+  .section{padding:20px 12px;}
+  .box{margin:8px 0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">RESPAWN</div>
+  <div class="nav">
+    <a href="#how">How it Works</a>
+    <a href="#faq">FAQ</a>
+    <a href="#support">Support</a>
+    <a class="login-btn" href="login.html">Log In</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+  <div class="hero-text">
+    <h1>Restart. Reload. Rise.</h1>
+    <p>One Task, One Step, One Better Version of You.</p>
+  </div>
+
+  <div class="card">
+    <h3>Get Started</h3>
+    <input class="input" placeholder="Email">
+    <input class="input" placeholder="Password" type="password">
+    <button class="btn primary" onclick="location.href='signup.html'">Continue</button>
+    <button class="btn google">Continue with Google</button>
+  </div>
+
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <h2>How It Works</h2>
+
+  <div class="box">1. Add daily inputs (study, sleep, stress)</div>
+  <div class="box">2. Avatar mood + background change</div>
+  <div class="box">3. Complete quests & earn XP</div>
+  <div class="box">4. Level up your real life</div>
+</div>
+
+<!-- FAQ -->
+<div class="section" id="faq">
+  <h2>FAQ</h2>
+  <div class="box">Do we track other apps? — No, only your inputs.</div>
+  <div class="box">Is it beginner friendly? — Yes, micro steps only.</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer" id="support">
+
+  <div style="display:flex;justify-content:center;gap:60px;flex-wrap:wrap;text-align:left;">
+
+    <div>
+      <div style="font-weight:bold;color:#a7f3d0;margin-bottom:6px;">Support</div>
+      <div>FAQ</div>
+    </div>
+
+    <div>
+      <div style="font-weight:bold;color:#a7f3d0;margin-bottom:6px;">Social</div>
+      <div>Instagram</div>
+      <div>Discord</div>
+      <div>Twitter</div>
+    </div>
+
+  </div>
+
+  <p>Made with ❤ by Team Rocket</p>
+  <br>
+  <p>© 2026 Respawn. All rights reserved.</p>
+
+</div>
+
+</body>
+</html>

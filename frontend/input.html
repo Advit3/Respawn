@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Inputs - RESPAWN</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:url('../assets/images/bg.png') no-repeat center center fixed;
+  background-size:cover;
+  color:white;
+}
+
+/* BACK BUTTON */
+.back{
+  position:fixed;
+  top:12px;
+  left:12px;
+  background:#065f46;
+  color:white;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:14px;
+  z-index:100;
+}
+
+.container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:16px;
+}
+
+.card{
+  background:rgba(0,0,0,0.65);
+  padding:20px;
+  border-radius:14px;
+  width:460px;
+  max-width:100%;
+}
+
+h2{
+  text-align:center;
+  letter-spacing:1px;
+}
+
+.label{
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.slider{
+  width:100%;
+}
+
+.value{
+  text-align:right;
+  font-size:14px;
+  opacity:0.9;
+}
+
+.stress{
+  display:flex;
+  gap:6px;
+}
+
+.stress div{
+  padding:10px;
+  border:2px solid #4ade80;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.stress .active{
+  background:#065f46;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  color:#065f46;
+  font-weight:bold;
+}
+
+@media(max-width:600px){
+  .card{width:95%;}
+}
+</style>
+</head>
+<body>
+
+<!-- BACK BUTTON -->
+<div class="back" onclick="location.href='index.html'">← Back</div>
+
+<div class="container">
+<div class="card">
+
+<h2>Daily Power Log 🎮</h2>
+
+<div class="label">Sleep Hours</div>
+<input type="range" min="0" max="12" value="6" class="slider"
+ oninput="showSleep.innerText=this.value+' hrs'" id="sleep" />
+<div class="value" id="showSleep">6 hrs</div>
+
+<div class="label">Screen Time </div>
+<input type="range" min="0" max="16" value="4" class="slider"
+ oninput="showScreen.innerText=this.value+' hrs'" id="screen" />
+<div class="value" id="showScreen">4 hrs</div>
+
+<div class="label">Water Intake </div>
+<input type="range" min="0" max="6" value="2" class="slider"
+ oninput="showWater.innerText=this.value+' L'" id="water" />
+<div class="value" id="showWater">2 L</div>
+
+<div class="label">Stress Level (0-5)</div>
+<div class="stress" id="stressBox"></div>
+
+<div class="label">Exercise</div>
+<div style="display:flex;align-items:center;gap:10px">
+  <label class="switch">
+    <input type="checkbox" id="exSwitch" onchange="exercise=this.checked">
+    <span class="sliderSwitch"></span>
+  </label>
+  <span id="exText">Tap if done</span>
+</div>
+
+<style>
+.switch{position:relative;display:inline-block;width:46px;height:24px;}
+.switch input{opacity:0;width:0;height:0;}
+.sliderSwitch{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#022c22;border:2px solid #4ade80;border-radius:24px;transition:.3s;}
+.sliderSwitch:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:2px;background:white;border-radius:50%;transition:.3s;}
+.switch input:checked + .sliderSwitch{background:#065f46;}
+.switch input:checked + .sliderSwitch:before{transform:translateX(20px);}
+</style>
+
+<button class="btn" onclick="saveInputs()">OK</button>
+
+</div>
+</div>
+
+<script>
+let stressLevel = 0;
+let exercise = false;
+
+const box = document.getElementById('stressBox');
+for(let i=0;i<=5;i++){
+  box.innerHTML += `<div onclick="setStress(${i},this)">${i}</div>`;
+}
+
+function setStress(v,el){
+  stressLevel = v;
+  document.querySelectorAll('.stress div').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function saveInputs(){
+  const data = {
+    sleep: document.getElementById('sleep').value,
+    screen: document.getElementById('screen').value,
+    water: document.getElementById('water').value,
+    stress: stressLevel,
+    exercise: exercise
+  };
+
+  localStorage.setItem('dailyInputs', JSON.stringify(data));
+
+  // → GO TO STATS PAGE
+  location.href='stats.html';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signup - RESPAWN</title>
+
+<style>
+/* ===== GLOBAL – MOBILE + LAPTOP SAFE ===== */
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:url('../assets/images/bg.png') no-repeat center center fixed;
+  background-size:cover;
+  color:#ffffff;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex:1;
+  padding:16px;
+}
+
+.card{
+  background:rgba(0,0,0,0.60);
+  padding:26px;
+  border-radius:14px;
+  width:360px;
+  max-width:100%;
+  box-shadow:0 8px 20px rgba(0,0,0,0.30);
+}
+
+h2{
+  text-align:center;
+}
+
+.input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:2px solid #4ade80;
+  border-radius:8px;
+  background:#022c22;
+  color:#ecfdf5;
+  box-sizing:border-box;
+}
+
+.select{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:2px solid #4ade80;
+  border-radius:8px;
+  background:#022c22;
+  color:#ecfdf5;
+}
+
+.btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.primary{
+  background:white;
+  color:#065f46;
+  font-weight:bold;
+}
+
+.primary:hover{
+  background:#dcfce7;
+}
+
+.google{
+  background:transparent;
+  border:2px solid white;
+  color:white;
+}
+
+.link{
+  text-align:center;
+  margin-top:10px;
+}
+
+@media(max-width:600px){
+  .card{
+    width:95%;
+    padding:20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h2>Create Account</h2>
+
+    <input id="name" class="input" placeholder="Full Name">
+    <input id="email" class="input" placeholder="Email">
+    <input id="password" class="input" type="password" placeholder="Password">
+
+    
+
+    <button id="signupBtn" class="btn primary">Create Account</button>
+
+    <button class="btn google">Continue with Google</button>
+
+    <div class="link">
+      <small>Already have account? <a href="login.html" style="color:#a7f3d0">Login</a></small>
+    </div>
+  </div>
+</div>
+
+<!-- READY FOR FIREBASE / ANY BACKEND -->
+<script>
+document.getElementById('signupBtn').onclick = () => {
+  const data = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    level: document.getElementById('level').value,
+    focus: document.getElementById('focus').value
+  };
+
+  // Connect Firebase Auth or Node API here
+  console.log(data);
+};
+</script>
+
+</body>
+</html>
