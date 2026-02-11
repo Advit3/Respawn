@@ -14,7 +14,6 @@ body{
   color:white;
 }
 
-/* BACK BUTTON */
 .back{
   position:fixed;
   top:12px;
@@ -24,8 +23,6 @@ body{
   padding:8px 12px;
   border-radius:8px;
   cursor:pointer;
-  font-size:14px;
-  z-index:100;
 }
 
 .container{
@@ -41,48 +38,47 @@ body{
   border-radius:14px;
   width:460px;
   max-width:100%;
+  position:relative;
 }
 
-h2{
-  text-align:center;
-  letter-spacing:1px;
+/* ===== ANIMATED POPUP ===== */
+.notice{
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#065f46;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+  display:none;
+  border:1px solid #4ade80;
+
+  animation: pop 0.6s ease;
 }
 
-.label{
-  margin-top:10px;
-  font-weight:bold;
+@keyframes pop{
+  from{opacity:0;top:-40px;}
+  to{opacity:1;top:-20px;}
 }
 
-.slider{
-  width:100%;
-}
+.label{margin-top:10px;font-weight:bold;}
+.slider{width:100%;}
+.value{text-align:right;font-size:14px;}
 
-.value{
-  text-align:right;
-  font-size:14px;
-  opacity:0.9;
-}
-
-.stress{
-  display:flex;
-  gap:6px;
-}
-
+.stress{display:flex;gap:6px;}
 .stress div{
   padding:10px;
   border:2px solid #4ade80;
   border-radius:8px;
   cursor:pointer;
 }
-
-.stress .active{
-  background:#065f46;
-}
+.stress .active{background:#065f46;}
 
 .btn{
   width:100%;
   padding:12px;
-  margin-top:12px;
+  margin-top:10px;
   border:none;
   border-radius:10px;
   background:white;
@@ -90,18 +86,37 @@ h2{
   font-weight:bold;
 }
 
-@media(max-width:600px){
-  .card{width:95%;}
+.confirmBtn{
+  background:#4ade80;
+  color:#022c22;
 }
+
+/* SWITCH */
+.switch{position:relative;display:inline-block;width:46px;height:24px;}
+.switch input{opacity:0;width:0;height:0;}
+.sliderSwitch{
+ position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;
+ background:#022c22;border:2px solid #4ade80;border-radius:24px;
+}
+.sliderSwitch:before{
+ position:absolute;content:"";height:16px;width:16px;
+ left:3px;bottom:2px;background:white;border-radius:50%;
+}
+.switch input:checked + .sliderSwitch{background:#065f46;}
+.switch input:checked + .sliderSwitch:before{transform:translateX(20px);}
 </style>
 </head>
+
 <body>
 
-<!-- BACK BUTTON -->
 <div class="back" onclick="location.href='index.html'">← Back</div>
 
 <div class="container">
-<div class="card">
+<div class="card" id="card">
+
+<div class="notice" id="notice">
+⚠ Once filled, info can’t be edited before 4 AM
+</div>
 
 <h2>Daily Power Log 🎮</h2>
 
@@ -110,12 +125,12 @@ h2{
  oninput="showSleep.innerText=this.value+' hrs'" id="sleep" />
 <div class="value" id="showSleep">6 hrs</div>
 
-<div class="label">Screen Time </div>
+<div class="label">Screen Time</div>
 <input type="range" min="0" max="16" value="4" class="slider"
  oninput="showScreen.innerText=this.value+' hrs'" id="screen" />
 <div class="value" id="showScreen">4 hrs</div>
 
-<div class="label">Water Intake </div>
+<div class="label">Water Intake</div>
 <input type="range" min="0" max="6" value="2" class="slider"
  oninput="showWater.innerText=this.value+' L'" id="water" />
 <div class="value" id="showWater">2 L</div>
@@ -129,19 +144,15 @@ h2{
     <input type="checkbox" id="exSwitch" onchange="exercise=this.checked">
     <span class="sliderSwitch"></span>
   </label>
-  <span id="exText">Tap if done</span>
+  <span>Tap if done</span>
 </div>
 
-<style>
-.switch{position:relative;display:inline-block;width:46px;height:24px;}
-.switch input{opacity:0;width:0;height:0;}
-.sliderSwitch{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#022c22;border:2px solid #4ade80;border-radius:24px;transition:.3s;}
-.sliderSwitch:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:2px;background:white;border-radius:50%;transition:.3s;}
-.switch input:checked + .sliderSwitch{background:#065f46;}
-.switch input:checked + .sliderSwitch:before{transform:translateX(20px);}
-</style>
+<!-- ===== NEW BUTTONS ===== -->
+<button class="btn" onclick="saveInfo()">Save Info</button>
 
-<button class="btn" onclick="saveInputs()">OK</button>
+<button class="btn confirmBtn" onclick="confirmMove()">
+Confirm & Continue
+</button>
 
 </div>
 </div>
@@ -149,7 +160,9 @@ h2{
 <script>
 let stressLevel = 0;
 let exercise = false;
+let isSaved = false;
 
+/* CREATE STRESS BUTTONS */
 const box = document.getElementById('stressBox');
 for(let i=0;i<=5;i++){
   box.innerHTML += `<div onclick="setStress(${i},this)">${i}</div>`;
@@ -157,22 +170,56 @@ for(let i=0;i<=5;i++){
 
 function setStress(v,el){
   stressLevel = v;
-  document.querySelectorAll('.stress div').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.stress div')
+    .forEach(x=>x.classList.remove('active'));
   el.classList.add('active');
 }
 
-function saveInputs(){
+/* LOCK LOGIC */
+function getResetTime(){
+  let now = new Date();
+  let reset = new Date();
+
+  reset.setHours(4,0,0,0);
+
+  if(now >= reset){
+    reset.setDate(reset.getDate()+1);
+  }
+
+  return reset.getTime();
+}
+
+function saveInfo(){
+
+  isSaved = true;
+
+  notice.style.display="block";
+
+  // show for 10 seconds
+  setTimeout(()=>{
+    notice.style.display="none";
+  },10000);
+
   const data = {
-    sleep: document.getElementById('sleep').value,
-    screen: document.getElementById('screen').value,
-    water: document.getElementById('water').value,
+    sleep: sleep.value,
+    screen: screen.value,
+    water: water.value,
     stress: stressLevel,
     exercise: exercise
   };
 
   localStorage.setItem('dailyInputs', JSON.stringify(data));
+  localStorage.setItem("dailyLock", getResetTime());
+}
 
-  // → GO TO STATS PAGE
+/* ===== CONFIRM LOGIC ===== */
+function confirmMove(){
+
+  if(!isSaved){
+    alert("⚠ Please click SAVE INFO first!");
+    return;
+  }
+
   location.href='stats.html';
 }
 </script>

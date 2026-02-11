@@ -9,11 +9,8 @@
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
-
-  /* ✅ FIXED BG PATH PNG */
   background:url('../assets/images/bg.png') no-repeat center center fixed;
   background-size:cover;
-
   color:white;
   min-height:100vh;
   display:flex;
@@ -38,28 +35,54 @@ body::before{
   padding:8px 12px;
   border-radius:8px;
   cursor:pointer;
-  font-size:14px;
-  z-index:100;
 }
 
+/* CARD */
 .container{
   flex:1;
-  padding:16px;
   display:flex;
   justify-content:center;
   align-items:center;
+  padding:16px;
 }
 
 .card{
   background:rgba(0,0,0,0.68);
-  padding:22px;
+  padding:20px;
   border-radius:14px;
   width:520px;
+
+  /* 👉 adjust to textbox size */
+  height:auto;
   max-width:100%;
+  position:relative;
+  box-sizing:border-box;
 }
 
-h2{text-align:center;}
+/* TOAST */
+.toast{
+  position:absolute;
+  top:-30px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#065f46;
+  border:1px solid #4ade80;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+  opacity:0;
+}
 
+.toast.show{
+  animation: toastIn 0.5s ease forwards;
+}
+
+@keyframes toastIn{
+  from{opacity:0;top:-40px;}
+  to{opacity:1;top:-10px;}
+}
+
+/* GENDER */
 .gender-box{
   display:flex;
   gap:10px;
@@ -69,40 +92,38 @@ h2{text-align:center;}
 .gender{
   flex:1;
   text-align:center;
-  padding:12px;
+  padding:10px;
   border:2px solid #4ade80;
   border-radius:10px;
   cursor:pointer;
-  transition:.3s;
 }
 
 .gender.selected{
   background:#065f46;
-  box-shadow:0 0 10px #4ade80;
 }
 
+/* ===== AVATAR IN ONE LINE ONLY ===== */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:12px;
-  margin-top:12px;
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+  justify-content:center;     /* center align */
 }
 
 .avatar{
+  width:110px;                /* fixed width */
   border:2px solid #4ade80;
   border-radius:10px;
-  padding:6px;
+  padding:4px;
   text-align:center;
   cursor:pointer;
-  transition:.3s;
   background:#022c22;
 }
 
 .avatar img{
   width:100%;
-  height:120px;
+  height:110px;
   object-fit:contain;
-  border-radius:8px;
 }
 
 .avatar.selected{
@@ -111,31 +132,28 @@ h2{text-align:center;}
   background:#065f46;
 }
 
+/* USERNAME TEXTBOX SIZE */
 .input{
   width:100%;
-  padding:12px;
+  padding:10px;
   margin-top:10px;
   border:2px solid #4ade80;
   border-radius:8px;
   background:#022c22;
-  color:#ecfdf5;
+  color:white;
   box-sizing:border-box;
 }
 
+/* BUTTON */
 .btn{
   width:100%;
-  padding:12px;
+  padding:10px;
   margin-top:10px;
   border:none;
   border-radius:10px;
   background:white;
   color:#065f46;
   font-weight:bold;
-}
-
-@media(max-width:600px){
-  .card{width:95%;}
-  .avatar img{height:100px;}
 }
 </style>
 </head>
@@ -147,6 +165,9 @@ h2{text-align:center;}
 <div class="container">
 <div class="card">
 
+<!-- TOAST -->
+<div class="toast" id="toastMsg"></div>
+
 <h2>Step 1 – Select Gender</h2>
 
 <div class="gender-box">
@@ -155,11 +176,15 @@ h2{text-align:center;}
 </div>
 
 <div id="avatarSection" style="display:none;">
+
 <h2>Step 2 – Choose Your Hero</h2>
 
+<!-- AVATAR ONE LINE -->
 <div class="grid" id="avatarGrid"></div>
 
-<input class="input" id="username" placeholder="Enter avatar name / username" />
+<!-- USERNAME -->
+<input class="input" id="username"
+ placeholder="Enter avatar name / username" />
 
 <button class="btn" onclick="save()">Continue</button>
 </div>
@@ -172,6 +197,16 @@ let selectedGender=null;
 
 const maleAvatars=['m1.png','m2.png','m3.png','m4.png'];
 const femaleAvatars=['f1.png','f2.png','f3.png','f4.png'];
+
+/* TOAST */
+function showToast(msg){
+  toastMsg.innerText = msg;
+  toastMsg.classList.add("show");
+
+  setTimeout(()=>{
+    toastMsg.classList.remove("show");
+  },10000);
+}
 
 function chooseGender(g,el){
  selectedGender=g;
@@ -189,7 +224,6 @@ function chooseGender(g,el){
  list.forEach(file=>{
   grid.innerHTML += `
    <div class="avatar" onclick="select(this)" data-id="${file}">
-     <!-- ✅ FIXED AVATAR PATH -->
      <img src="../assets/images/${file}">
    </div>`;
  });
@@ -204,12 +238,25 @@ function select(el){
  el.classList.add('selected');
 }
 
-async function save(){
+function save(){
+
+ if(!selectedGender){
+   showToast("⚠ Please select gender first");
+   return;
+ }
+
  const chosen = document.querySelector('.avatar.selected');
  const name   = document.getElementById('username').value.trim();
 
- if(!chosen){ alert('Select avatar'); return; }
- if(!name){ alert('Enter username'); return; }
+ if(!chosen){
+   showToast("⚠ Please select an avatar");
+   return;
+ }
+
+ if(!name){
+   showToast("⚠ Please enter username");
+   return;
+ }
 
  const data={
    gender:selectedGender,

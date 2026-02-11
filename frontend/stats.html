@@ -6,56 +6,199 @@
 <title>Dashboard – RESPAWN</title>
 
 <style>
-body{margin:0;font-family:'Segoe UI',sans-serif;color:rgb(248, 250, 248);}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:rgb(248, 250, 248);
+  background:#022c22;
+}
 
-#moodVideo{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:0.75;}
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 24px;
+  background:#065f46;
+  position:sticky;
+  top:0;
+}
 
-.header{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#065f46;position:sticky;top:0;}
-.btn{border:none;border-radius:8px;padding:8px 12px;background:white;color:#065f46;}
+.btn{
+  border:none;
+  border-radius:8px;
+  padding:8px 12px;
+  background:white;
+  color:#065f46;
+}
 
-.profileMini{display:flex;align-items:center;gap:10px;background:transparent;padding:10px;border-radius:12px;margin:10px;cursor:pointer;}
-.profileMini img{width:54px;height:54px;border-radius:50%;border:3px solid #4ade80;object-fit:contain;object-position:center; background:#022c22; padding:3px;}
+/* PROFILE MINI */
+.profileMini{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  margin:10px;
+  cursor:pointer;
+}
+
+.profileMini img{
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  border:3px solid #4ade80;
+  object-fit:contain;
+  background:#022c22;
+  padding:3px;
+}
 
 /* XP */
-.xpCard{margin-top:6px;background:#022c22;padding:8px 10px;border-radius:12px;width:190px;border:1px solid #4ade80;}
-.xpRow{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;}
-.xpBar{height:8px;background:#022c22;border-radius:10px;}
-.xpFill{height:100%;background:#22c55e;border-radius:10px;width:0%;transition:.4s;}
+.xpCard{
+  margin-top:6px;
+  background:#065f46;
+  padding:8px 12px;
+  border-radius:16px;
+  width:200px;
+  border:2px solid #4ade80;
+}
 
-.container{padding:12px;max-width:1000px;margin:auto;}
-.heroCard{background:rgba(0,0,0,0.55);border-radius:14px;padding:16px;text-align:center;}
+.xpRow{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+}
 
-/* MAIN AVATAR SHOULD NOT BE ROUND (changes with mood) */
-.avatar{width:170px;height:170px;object-fit:contain;object-position:center; background:none; border-radius:0;}
+.xpBar{
+  height:8px;
+  background:#022c22;
+  border-radius:10px;
+}
 
-.flexRow{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
-.panel{background:rgba(0,0,0,0.55);border-radius:12px;padding:10px;flex:1;min-width:260px;}
+.xpFill{
+  height:100%;
+  background:#22c55e;
+  border-radius:10px;
+  transition:.4s;
+}
+
+/* MAIN */
+.container{
+  padding:12px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.heroCard{
+  background:rgba(0,0,0,0.55);
+  border-radius:14px;
+  padding:16px;
+  text-align:center;
+}
+
+.avatar{
+  width:170px;
+  height:170px;
+  object-fit:contain;
+}
+
+.flexRow{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+
+.panel{
+  background:rgba(0,0,0,0.55);
+  border-radius:12px;
+  padding:10px;
+  flex:1;
+  min-width:260px;
+}
 
 .bar{height:8px;background:#022c22;border-radius:8px;}
 .fill{height:100%;background:#4ade80;}
+
 .row{display:flex;gap:6px;flex-wrap:wrap;}
-.tag{padding:6px 10px;border-radius:10px;background:#022c22;border:1px solid #4ade80;font-size:13px;}
-
-/* PROFILE MODAL */
-#profileModal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:10;}
-.card{background:#065f46;width:90%;max-width:460px;max-height:82%;overflow-y:auto;border-radius:14px;padding:16px;}
-
-.field{margin:12px 0;}
-.field input,.field select{width:100%;padding:10px 12px;border-radius:10px;border:none;box-sizing:border-box;height:42px;}
-
-.avatarGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.avatarGrid img{width:76px;height:76px;border-radius:50%;border:3px solid transparent;cursor:pointer;object-fit:contain;background:#022c22;padding:4px;transition:.2s;}
-.avatarGrid img:hover{transform:scale(1.05);}
-.selected{border-color:#4ade80 !important;box-shadow:0 0 10px #4ade80;}
-
-.saveBtn{width:100%;margin-top:10px;padding:10px;border:none;border-radius:10px;background:white;color:#065f46;}
-.xpIcon{color:#22c55e;font-weight:bold;}
-/* ===== HAMBURGER MENU ===== */
-.menu-icon{
-  font-size:26px;
-  cursor:pointer;
-  color:white;
+.tag{
+  padding:6px 10px;
+  border-radius:10px;
+  background:#022c22;
+  border:1px solid #4ade80;
+  font-size:13px;
 }
+
+/* PROFILE MODAL FIXED */
+#profileModal{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
+
+.card{
+  background:#065f46;
+  width:90%;
+  max-width:460px;
+  max-height:82%;
+  overflow-y:auto;
+  border-radius:14px;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+.field{
+  margin:10px 0;
+  width:100%;
+}
+
+.field input,
+.field select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border:none;
+  height:42px;
+  box-sizing:border-box;
+}
+
+.avatarGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+.avatarGrid img{
+  width:76px;height:76px;
+  border-radius:50%;
+  border:3px solid transparent;
+  cursor:pointer;
+  object-fit:contain;
+  background:#022c22;
+  padding:4px;
+}
+
+.selected{
+  border-color:#4ade80 !important;
+  box-shadow:0 0 10px #4ade80;
+}
+
+.saveBtn{
+  width:100%;
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  color:#065f46;
+}
+
+/* MENU */
+.menu-icon{font-size:26px;cursor:pointer;}
 
 .side-menu{
   position:fixed;
@@ -65,46 +208,33 @@ body{margin:0;font-family:'Segoe UI',sans-serif;color:rgb(248, 250, 248);}
   padding:16px 20px;
   border-radius:14px;
   display:none;
-  min-width:180px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.25);
-  z-index:999;
 }
-
 .side-menu a{
   display:block;
   padding:10px 4px;
   color:#065f46;
-  font-weight:600;
   text-decoration:none;
 }
-
-.side-menu a:hover{
-  color:#16a34a;
-}
-
 </style>
 </head>
 
 <body>
 
-<video id="moodVideo" autoplay muted loop playsinline></video>
-
 <div class="header">
-  <div class="logo">RESPAWN</div>
+  <div>RESPAWN</div>
 
-  <div style="display:flex;align-items:center;gap:12px;">
+  <div style="display:flex;gap:12px;">
     <button class="btn" onclick="logout()">Logout</button>
     <div class="menu-icon" onclick="toggleMenu()">☰</div>
   </div>
 </div>
-<!-- HAMBURGER MENU -->
+
 <div class="side-menu" id="menu">
-  <a href="home.html">Home</a>
+  <a href="stats.html">Home</a>
   <a href="quests.html">Quests</a>
   <a href="calendar.html">Calendar & Boss</a>
   <a href="work.html">Work</a>
 </div>
-
 
 <div class="profileMini" onclick="openProfile()">
   <img id="miniAv" />
@@ -113,8 +243,8 @@ body{margin:0;font-family:'Segoe UI',sans-serif;color:rgb(248, 250, 248);}
 
     <div class="xpCard">
       <div class="xpRow">
-        <span id="levelTxt">Level --</span>
-        <span><span class="xpIcon">✦</span> <span id="xpFraction"></span></span>
+        <span id="levelTxt"></span>
+        <span id="xpFraction"></span>
       </div>
       <div class="xpBar"><div class="xpFill" id="xpFill"></div></div>
     </div>
@@ -124,186 +254,213 @@ body{margin:0;font-family:'Segoe UI',sans-serif;color:rgb(248, 250, 248);}
 <div class="container">
 <div class="heroCard">
   <img id="av" class="avatar" />
-  <div class="mood" id="moodTxt"></div>
+  <div id="moodTxt"></div>
 </div>
 
 <div class="flexRow">
-<div class="panel"><b>✨ Buffs</b><div class="row" id="buffBox"></div></div>
+<div class="panel"><b>✨ Buffs</b><div id="buffBox" class="row"></div></div>
+
 <div class="panel">
-<b>📊 Stats</b>
+<b>📊 Stats</b><br>
 Energy <span id="eTxt"></span><div class="bar"><div class="fill" id="eBar"></div></div>
 Health <span id="hTxt"></span><div class="bar"><div class="fill" id="hBar"></div></div>
 Focus <span id="fTxt"></span><div class="bar"><div class="fill" id="fBar"></div></div>
 Resilience <span id="rTxt"></span><div class="bar"><div class="fill" id="rBar"></div></div>
 </div>
-<div class="panel"><b>⚠️ Debuffs</b><div class="row" id="debuffBox"></div></div>
+
+<div class="panel"><b>⚠️ Debuffs</b><div id="debuffBox" class="row"></div></div>
 </div>
 </div>
 
-<div id="profileModal" onclick="outside(event)">
- <div class="card" onclick="event.stopPropagation()">
-   <h3>Player Profile</h3>
+<!-- PROFILE CARD -->
+<div id="profileModal" onclick="closeOutside(event)">
+<div class="card">
 
-   <!-- round avatar only in edit card, adjusted -->
-   <center>
-     <img id="editImg" style="width:120px;height:120px;border-radius:50%;border:3px solid #4ade80;object-fit:contain;object-position:center; background:#022c22; padding:4px"/>
-   </center>
+<h3>Player Profile</h3>
 
-   <div class="field"><label>Username</label><input id="uName"/></div>
-   <div class="field"><label>Email</label><input id="uEmail"/></div>
+<div style="text-align:center">
+<img id="pAv" style="width:90px;height:90px;border-radius:50%">
+</div>
 
-   <div class="field">
-     <label>Gender</label>
-     <select id="uGender"><option>male</option><option>female</option></select>
-   </div>
+<div class="field">
+<label>Username</label>
+<input id="uName">
+</div>
 
-   <div class="field">
-     <label>Choose Avatar</label>
-     <div class="avatarGrid" id="grid"></div>
-   </div>
+<div class="field">
+<label>Email</label>
+<input id="uEmail">
+</div>
 
-   <!-- show only level + xp card same as dashboard -->
-   <div class="xpCard">
-      <div class="xpRow">
-        <span id="cLevelTxt">Level --</span>
-        <span><span class="xpIcon">✦</span> <span id="cXpFraction"></span></span>
-      </div>
-      <div class="xpBar"><div class="xpFill" id="cXpFill"></div></div>
-   </div>
+<div class="field">
+<label>Gender</label>
+<select id="uGender">
+<option>Male</option>
+<option>Female</option>
+</select>
+</div>
 
-   <button class="saveBtn" onclick="saveProfile()">Save</button>
- </div>
+<label>Choose Avatar</label>
+<div class="avatarGrid" id="grid"></div>
+
+<button class="saveBtn" onclick="saveProfile()">Save</button>
+
+</div>
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
 let profile = JSON.parse(localStorage.getItem('profile')||'{}');
 const input = JSON.parse(localStorage.getItem('dailyInputs')||'{}');
 const xpData = JSON.parse(localStorage.getItem('xpData'))||{xp:0,level:1,nextLevelXp:100};
 
-function resolveAvatar(v){
- if(!v) return '../assets/images/m1-normal.png';
- if(v.startsWith('http')||v.startsWith('data')) return v;
- if(v.includes('/')) return v;
- return '../assets/images/' + v;
+function path(v){
+  return '../assets/images/' + v;
 }
 
-miniAv.src = resolveAvatar(profile.avatar);
-miniName.innerText = profile.username || 'Player';
+/* ===== SUPER SAFE AVATAR BASE ===== */
+function getBaseAvatar(a){
+  if(!a) return "m1";
 
+  a = a.replace(".png","");      // remove extension
+  return a.split("-")[0];        // m2-normal → m2
+}
+
+let base = getBaseAvatar(profile.avatar);
+
+/* MINI PROFILE */
+miniName.innerText = profile.username || 'Player';
+miniAv.src = path(base + '-normal.png');
+
+/* XP */
 function renderXP(d){
  levelTxt.innerText='Level '+d.level;
  xpFraction.innerText=d.xp+' / '+d.nextLevelXp+' XP';
  xpFill.style.width=(d.xp/d.nextLevelXp*100)+'%';
-
- /* same on edit card */
- cLevelTxt.innerText='Level '+d.level;
- cXpFraction.innerText=d.xp+' / '+d.nextLevelXp+' XP';
- cXpFill.style.width=(d.xp/d.nextLevelXp*100)+'%';
 }
 renderXP(xpData);
 
-/* Avatar Grid Build */
-const avatars=['m1','m2','m3','m4','f1','f2','f3','f4'];
-const grid=document.getElementById('grid');
-avatars.forEach(a=>{
- const img=document.createElement('img');
- img.src='../assets/images/'+a+'-normal.png';
- img.onclick=()=>pick(img,a);
- grid.appendChild(img);
-});
-
-function openProfile(){
- profileModal.style.display='flex';
- editImg.src = resolveAvatar(profile.avatar);
- uName.value = profile.username||'';
- uEmail.value = profile.email||'';
- uGender.value = profile.gender||'male';
-}
-
-function outside(e){profileModal.style.display='none';}
-
-let chosen = profile.avatar || 'm1-normal.png';
-function pick(el,val){
- document.querySelectorAll('.avatarGrid img').forEach(i=>i.classList.remove('selected'));
- el.classList.add('selected');
- chosen = val + '-normal.png';
-
- /* instant change everywhere */
- editImg.src = resolveAvatar(chosen);
- miniAv.src = resolveAvatar(chosen);
- av.src='../assets/images/'+val+'-'+mood.toLowerCase()+'.png';
-}
-
-function saveProfile(){
- // direct save without browser confirm (more professional)
- profile.username=uName.value.trim();
- profile.email=uEmail.value.trim();
- profile.gender=uGender.value;
- profile.avatar=chosen;
-
- localStorage.setItem('profile',JSON.stringify(profile));
-
- miniName.innerText=profile.username || 'Player';
- profileModal.style.display='none';
-}
-
+/* ===== CALCULATE STATS ===== */
 function calculate(i){
  let s={energy:50,health:50,focus:50,resilience:50};
+
  if(i.sleep>=7) s.energy+=10;
  if(i.sleep<5) s.energy-=15;
+
  if(i.stress>=4){s.focus-=10;s.health-=5;}
+
  if(i.water>=3) s.energy+=5;
  if(i.exercise){s.health+=10;s.resilience+=10;}
+
  for(let k in s)s[k]=Math.max(0,Math.min(100,s[k]));
  return s;
 }
 
 const stats=calculate(input);
 
+/* ===== MOOD DETECTION ===== */
 let mood='Normal';
-let video='../assets/videos/cloudy.mp4';
 
-if(input.stress>=4||stats.health<40){mood='Stressed';video='../assets/videos/rain.mp4';}
-else if(stats.energy>65){mood='Energetic';video='../assets/videos/sunny.mp4';}
-else if(stats.energy<45){mood='Tired';video='../assets/videos/night.mp4';}
+if(input.stress>=4 || stats.health<40)
+   mood='Stressed';
+
+else if(stats.energy>65)
+   mood='Energetic';
+
+else if(stats.energy<45)
+   mood='Tired';
 
 moodTxt.innerText='Mood: '+mood;
 
-let base=(profile.avatar||'m1').split('-')[0];
-av.src='../assets/images/'+base+'-'+mood.toLowerCase()+'.png';
+/* ===== MOST IMPORTANT FIX ===== */
+av.src = path(base + '-' + mood.toLowerCase() + '.png');
 
-moodVideo.src=video;
-moodVideo.play();
-
-function show(id,val){document.getElementById(id).style.width=val+'%';document.getElementById(id.replace('Bar','Txt')).innerText=val+'%';}
+/* ===== SHOW BARS ===== */
+function show(id,val){
+ document.getElementById(id).style.width=val+'%';
+ document.getElementById(id.replace('Bar','Txt')).innerText=val+'%';
+}
 
 show('eBar',stats.energy);
 show('hBar',stats.health);
 show('fBar',stats.focus);
 show('rBar',stats.resilience);
 
-if(stats.energy>65)buffBox.innerHTML+=`<div class='tag'>⚡ High Energy</div>`;
-if(input.exercise)buffBox.innerHTML+=`<div class='tag'>💪 Active</div>`;
-if(stats.energy<40)debuffBox.innerHTML+=`<div class='tag'>😴 Fatigue</div>`;
-if(stats.health<40)debuffBox.innerHTML+=`<div class='tag'>🔥 Burnout</div>`;
+/* BUFFS */
+if(stats.energy>65)
+ buffBox.innerHTML+=`<div class='tag'>⚡ High Energy</div>`;
 
-function logout(){location.href='index.html';}
-/* ===== HAMBURGER SCRIPT ===== */
-function toggleMenu(){
-  const menu = document.getElementById("menu");
-  menu.style.display =
-    menu.style.display === "block" ? "none" : "block";
-}
+if(input.exercise)
+ buffBox.innerHTML+=`<div class='tag'>💪 Active</div>`;
 
-document.addEventListener("click", function(e){
-  const menu = document.getElementById("menu");
-  const icon = document.querySelector(".menu-icon");
+if(stats.energy<40)
+ debuffBox.innerHTML+=`<div class='tag'>😴 Fatigue</div>`;
 
-  if(!menu.contains(e.target) && !icon.contains(e.target)){
-    menu.style.display = "none";
-  }
-});
+if(stats.health<40)
+ debuffBox.innerHTML+=`<div class='tag'>🔥 Burnout</div>`;
 
+/* ===== PROFILE CARD ===== */
+window.openProfile = function(){
+ profileModal.style.display='flex';
+
+ uName.value=profile.username||'';
+ uEmail.value=profile.email||'';
+ uGender.value=profile.gender||'Male';
+
+ pAv.src=path(base+'-normal.png');
+
+ grid.innerHTML='';
+ let list=['m1','m2','m3','m4','f1','f2','f3','f4'];
+
+ list.forEach(v=>{
+   let img=document.createElement('img');
+   img.src=path(v+'-normal.png');
+
+   if(base===v) img.classList.add('selected');
+
+   img.onclick=()=>{
+     document.querySelectorAll('.avatarGrid img')
+       .forEach(i=>i.classList.remove('selected'));
+
+     img.classList.add('selected');
+
+     profile.avatar=v+'-normal.png';
+     base=v;
+
+     pAv.src=img.src;
+   };
+
+   grid.appendChild(img);
+ });
+};
+
+window.saveProfile = function(){
+ profile.username=uName.value;
+ profile.email=uEmail.value;
+ profile.gender=uGender.value;
+
+ localStorage.setItem('profile',JSON.stringify(profile));
+ location.reload();
+};
+
+window.closeOutside = function(e){
+ if(e.target.id==='profileModal')
+   profileModal.style.display='none';
+};
+
+window.toggleMenu = function(){
+ menu.style.display =
+   menu.style.display==="block"?"none":"block";
+};
+
+window.logout = function(){
+ location.href='index.html';
+};
+
+}); // DOM END
 </script>
+
+
 </body>
 </html>
